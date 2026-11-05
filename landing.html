@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Welcome to Pokemon Battle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #e63946;
+    --red-deep: #9d1c2a;
+    --blue: #2563eb;
+    --blue-deep: #14388f;
+    --ink: #101828;
+    --paper: #fffaf0;
+    --gold: #ffcb05;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: "Nunito", system-ui, sans-serif;
+    color: var(--paper);
+    background: var(--ink);
+    overflow: hidden;
+  }
+
+  /* Two corners of the arena, split on a diagonal */
+  .arena {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    isolation: isolate;
+  }
+  .arena::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background:
+      linear-gradient(115deg, var(--red) 0 49.6%, var(--ink) 49.6% 50.4%, var(--blue) 50.4% 100%);
+  }
+  .arena::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(60% 50% at 25% 85%, var(--red-deep), transparent 70%),
+      radial-gradient(60% 50% at 78% 15%, var(--blue-deep), transparent 70%);
+    opacity: .7;
+  }
+
+  .fighter {
+    position: absolute;
+    bottom: 6vh;
+    width: clamp(120px, 22vw, 280px);
+    image-rendering: pixelated;
+    filter: drop-shadow(0 14px 0 rgba(0,0,0,.25));
+  }
+  .fighter.left  { left: 5vw; }
+  .fighter.right { right: 5vw; transform: scaleX(-1); }
+  .fighter.left  { animation: stepin-left .9s cubic-bezier(.2,.9,.3,1) both; }
+  .fighter.right { animation: stepin-right .9s cubic-bezier(.2,.9,.3,1) both; }
+  @keyframes stepin-left  { from { transform: translateX(-60vw); } to { transform: translateX(0); } }
+  @keyframes stepin-right { from { transform: translateX(60vw) scaleX(-1); } to { transform: translateX(0) scaleX(-1); } }
+
+  .card {
+    text-align: center;
+    max-width: 620px;
+    padding: 40px 32px 36px;
+    background: var(--paper);
+    color: var(--ink);
+    border: 5px solid var(--ink);
+    border-radius: 28px;
+    box-shadow: 10px 10px 0 var(--ink);
+  }
+
+  .ball {
+    width: 76px;
+    height: 76px;
+    margin: -78px auto 18px;
+    border-radius: 50%;
+    border: 5px solid var(--ink);
+    background:
+      radial-gradient(circle at 50% 50%, var(--paper) 0 11px, var(--ink) 11px 16px, transparent 16px),
+      linear-gradient(var(--red) 0 46%, var(--ink) 46% 54%, var(--paper) 54% 100%);
+    box-shadow: 4px 4px 0 var(--ink);
+    animation: wobble 2.4s ease-in-out 1s 2;
+  }
+  @keyframes wobble {
+    0%, 100% { transform: rotate(0); }
+    20% { transform: rotate(-14deg); }
+    40% { transform: rotate(12deg); }
+    60% { transform: rotate(-8deg); }
+    80% { transform: rotate(4deg); }
+  }
+
+  h1 {
+    font-family: "Bowlby One", Impact, sans-serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 6vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: .01em;
+  }
+  h1 span { display: block; }
+  .hi { font-size: .55em; color: var(--red); margin-bottom: 6px; }
+
+  p {
+    margin: 18px auto 28px;
+    max-width: 44ch;
+    font-size: 1.1rem;
+    line-height: 1.55;
+    font-weight: 600;
+  }
+
+  .start {
+    display: inline-block;
+    font-family: "Bowlby One", Impact, sans-serif;
+    font-size: 1.25rem;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--gold);
+    padding: 16px 38px;
+    border: 4px solid var(--ink);
+    border-radius: 999px;
+    box-shadow: 0 6px 0 var(--ink);
+    transition: transform .08s ease, box-shadow .08s ease;
+  }
+  .start:hover { transform: translateY(2px); box-shadow: 0 4px 0 var(--ink); }
+  .start:active { transform: translateY(6px); box-shadow: 0 0 0 var(--ink); }
+  .start:focus-visible { outline: 4px solid var(--blue); outline-offset: 4px; }
+
+  .hint { margin: 18px 0 0; font-size: .9rem; opacity: .65; }
+
+  @media (max-width: 720px) {
+    .fighter { opacity: .9; bottom: 2vh; width: 34vw; }
+    .card { margin-bottom: 20vh; padding: 36px 22px 30px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fighter.left, .fighter.right, .ball { animation: none; }
+    .fighter.right { transform: scaleX(-1); }
+  }
+</style>
+</head>
+<body>
+  <main class="arena">
+    <img class="fighter left"  src="https://img.pokemondb.net/sprites/black-white/anim/normal/charizard.gif" alt="" onerror="this.remove()">
+    <img class="fighter right" src="https://img.pokemondb.net/sprites/black-white/anim/normal/blastoise.gif" alt="" onerror="this.remove()">
+
+    <section class="card">
+      <div class="ball" aria-hidden="true"></div>
+      <h1>
+        <span class="hi">Hi, trainer!</span>
+        <span>Welcome to Pokemon Battle</span>
+      </h1>
+      <p>Pick your team of three, face a friend, and find out whose Pokemon is the last one standing.</p>
+      <a class="start" href="index.php" id="start">Start Battle</a>
+      <div class="hint">Press Enter to jump in</div>
+    </section>
+  </main>
+
+  <script>
+    // Pressing Enter also leads to the game
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") window.location.href = "index.php";
+    });
+  </script>
+</body>
+</html>
