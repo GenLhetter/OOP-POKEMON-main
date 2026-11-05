@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Battle Arena</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Pokemon Battle Arena</h1>
+            <button class="new-game-btn" id="newGameBtn" type="button">New Game</button>
+        </div>
+
+        <!-- Phase 1: each player picks 3 Pokemon -->
+        <section id="teamSelection" class="team-selection">
+            <h2 id="selectTitle">Player 1: choose your team</h2>
+            <div class="player-form">
+                <input class="player-input" id="playerName" type="text" maxlength="16" placeholder="Player 1 name" autocomplete="off">
+                <p class="team-note">Pick exactly 3 Pokemon</p>
+                <div class="pokemon-grid" id="pokemonGrid"></div>
+                <button class="select-btn" id="confirmBtn" type="button" disabled>Confirm Team</button>
+            </div>
+        </section>
+
+        <!-- Phase 2: battle -->
+        <section id="battlePhase" hidden>
+            <div class="battle-field">
+                <div class="player-area" id="player1-area"></div>
+                <div class="player-area" id="player2-area"></div>
+            </div>
+            <div class="game-over" id="gameOver" hidden>
+                <div class="winner" id="winnerText"></div>
+                <button class="reset-btn" id="resetBtn" type="button">Play Again</button>
+            </div>
+            <div class="battle-log">
+                <div class="log-title">Battle Log</div>
+                <div id="battleLog"></div>
+            </div>
+        </section>
+    </div>
+
+    <div class="music-controls" id="musicControls" style="display:none">
+        <button class="music-btn" id="playPauseBtn" type="button" aria-label="Play or pause music">⏸️</button>
+        <input class="volume-slider" id="volumeSlider" type="range" min="0" max="1" step="0.05" value="0.4" aria-label="Volume">
+    </div>
+    <!-- Put your battle music file at audio/battle.mp3 (or change the path) -->
+    <audio id="battleMusic" loop preload="none" src="audio/battle.mp3"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
