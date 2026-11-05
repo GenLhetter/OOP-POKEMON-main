@@ -90,7 +90,7 @@ class Pokemon extends BattleEntity {
         return "{$this->name} ({$typeStr}) - HP: {$this->health}/{$this->maxHealth}";
     }
 }
-// Hi
+// Hi and Hello again
 // Attack class
 class Attack {
     private $name;
